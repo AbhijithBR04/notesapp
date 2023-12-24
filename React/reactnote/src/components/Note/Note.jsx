@@ -4,26 +4,56 @@ import "react-toastify/dist/ReactToastify.css";
 import NoteCard from "./NoteCard";
 import Update from "./Update";
 import "./note.css";
+import axios from "axios";
 
 const Note = () => {
+  const id=localStorage.getItem('id') ||null
+  console.log(id)
   const [Inputs, setInputs] = useState({ body: "" });
   const [Array, setArray] = useState([]);
   const change = (e) => {
     const { name, value } = e.target;
     setInputs({ ...Inputs, [name]: value });
   };
-  const submit = () => {
+  // const submit = async() => {
+  //   if (Inputs.body === "") {
+  //     toast.error("Description should not be empty");
+  //   } else {
+  //     if(id){
+        
+  //       const resdata = await axios.post("http://localhost:5002/api/post", {
+  //         body: Inputs.body,
+  //         userUuid: id,
+  //       });
+  //       console.log(resdata);
+  //     }
+  //     setArray([...Array, Inputs]);
+  //     console.log(Inputs);
+  //     setInputs({ body: "" });
+  //     toast.success("Note Added");
+  //     toast.error("Note will no be saved,Please Sign up!");
+  //   }
+  // };
+  const submit = async () => {
     if (Inputs.body === "") {
       toast.error("Description should not be empty");
     } else {
-      setArray([...Array, Inputs]);
-      console.log(Inputs);
-      setInputs({ body: "" });
-      toast.success("Note Added");
-      toast.error("Note will no be saved,Please Sign up!");
+      try {
+        const response = await axios.post("http://localhost:5002/api/post", {
+          body: Inputs.body,
+          userUuid: id,
+        });
+  
+        setArray([...Array, response.data]); // Assuming the response.data is the new note
+        setInputs({ body: "" });
+        toast.success("Note Added");
+      } catch (error) {
+        console.error('Error creating note:', error);
+        toast.error("Failed to add note");
+      }
     }
   };
-
+  
   const del = (id) => {
     console.log(id);
     Array.splice(id, 1);
