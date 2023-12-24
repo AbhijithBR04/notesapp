@@ -31,17 +31,18 @@ const register = async (req, res) => {
     });
   }
 
-  const details = await User.findOne({ where: { email: email } });
+  const regdetails = await User.findOne({ where: { email: email } });
+
   try {
-    if (details) {
+    if (regdetails) {
       res.status(200).json({
         message: "user already exists",
       });
     } else {
       bcrypt.hash(password, 10).then(async (hash) => {
         const adduser = await User.create({
-          name: name,
           email: email,
+          name: name,
           password: hash,
         });
       });
@@ -247,7 +248,7 @@ const postNote = async (req, res) => {
 
 const updateNote = async (req, res) => {
   try {
-    const { noteId } = req.body;  // Get noteId from the request body
+    const { noteId } = req.body; // Get noteId from the request body
     const { uuid, body } = req.body;
 
     const userdata = await User.findOne({ where: { uuid: uuid } });
@@ -278,7 +279,6 @@ const updateNote = async (req, res) => {
   }
 };
 
-
 const Authentication = async (req, res, next) => {
   const apitoken = req.body.token;
 
@@ -303,6 +303,40 @@ const usernote = async (req, res) => {
     res.status(200).json(userNotes);
   } catch (err) {
     res.status(500).json({ error: err.message || "Error retrieving notes" });
+  }
+};
+
+const deleteNote = async (req, res) => {
+  try {
+    const { id } = req.params; // Get noteId from the URL parameter
+    const { uuid } = req.body; // Get UUID of the user
+
+    const userdata = await User.findOne({ where: { uuid: uuid } });
+
+    if (userdata) {
+      const existingNote = await Note.findOne({
+        where: { id: id, uuid: uuid },
+      });
+      if (existingNote) {
+        await existingNote.destroy();
+        res.status(200).json({
+          message: "Note deleted successfully",
+        });
+        console.log("Received DELETE request for note ID:", id);
+      } else {
+        res.status(404).json({
+          message: "Note not found or you don't have permission to delete it",
+        });
+      }
+    } else {
+      res.status(404).json({
+        message: "User not found",
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      message: err.message || "Error deleting note",
+    });
   }
 };
 
@@ -337,6 +371,7 @@ module.exports = {
   updateNote,
   Authentication,
   usernote,
+  deleteNote,
   registerSchema,
   loginSchema,
 };

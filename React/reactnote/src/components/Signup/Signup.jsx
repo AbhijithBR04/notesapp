@@ -21,7 +21,11 @@ const Signup = () => {
     e.preventDefault();
     try {
       await axios
-        .post("http://localhost:5002/api/register", Inputs)
+        .post("http://localhost:5002/api/register", Inputs,{
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
         .then((res) => {
           if (res.data.message === "user already exists") {
             alert(res.data.message);

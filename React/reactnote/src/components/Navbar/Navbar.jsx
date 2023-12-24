@@ -7,7 +7,7 @@ const Navbar = () => {
       <nav class="navbar navbar-expand-lg ">
         <div class="container">
           <Link class="navbar-brand" to="">
-            Notes
+            NoteXpress
           </Link>
           <button
             class="navbar-toggler"
@@ -28,7 +28,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li class="nav-item">
-                <Link class="nav-link active  btn-nav p-2" aria-current="page" to="/note">
+                <Link class="nav-link active  btn-nav p-2" aria-current="page" to="/notenew">
                   Notes
                 </Link>
               </li>

@@ -22,7 +22,7 @@ const App = () => {
           <Route path="/notenew" element={<AccountPage />} />
           <Route path="/update/" element={<UpdateNote />}/>
           <Route path="/update/:noteId"  element={<UpdateNote />} />
-          <Route path="/updatenew" element={<UpdateNew />} />
+          {/* <Route path="/updatenew" element={<UpdateNew />} /> */}
         </Routes>
       </Router>
     </div>

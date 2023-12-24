@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const UpdateNote = () => {
   const { noteId } = useParams(); // Use useParams to get the noteId from the URL
   const [noteBody, setNoteBody] = useState("");
+  const history = useNavigate();
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -40,26 +43,38 @@ const UpdateNote = () => {
           body: noteBody,
           uuid: uuid,
         }
-      );
+        );
+        toast.success("Note Updated")
       console.log(response.data);
-      alert(response.data.message);
+    //   alert(response.data.message);
+     history("/notenew");
     } catch (error) {
       console.error(
         "Error updating note:",
         error.response ? error.response.data : error.message
       );
+      toast.error("Note Updation failed")
     }
   };
 
   return (
     <div>
-      <h2>Update Note</h2>
-      <textarea
-        value={noteBody}
-        onChange={(e) => setNoteBody(e.target.value)}
-        placeholder="Enter your updated note..."
-      ></textarea>
-      <button onClick={handleUpdateNote}>Update Note</button>
+      <ToastContainer />
+      <div className="p-5 d-flex justify-content-center align-items-start flex-column update">
+        <h2>Update Note</h2>
+        <textarea
+          className="note-inputs w-100 p-3"
+          name="body"
+          value={noteBody}
+          onChange={(e) => setNoteBody(e.target.value)}
+          placeholder="Enter your updated note..."
+        ></textarea>
+        <div>
+          <button className="btn btn-dark my-4" onClick={handleUpdateNote}>
+            Update Note
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

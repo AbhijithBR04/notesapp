@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NoteCard from "./NoteCard";
 import { useNavigate } from "react-router-dom";
-import UpdateNote from "./UpdateNote";  // Import the UpdateNote component
+import UpdateNote from "./UpdateNote";
+import "./note.css";
+import { ToastContainer, toast } from "react-toastify"; // Import the UpdateNote component
 
 const AddNote = () => {
   const history = useNavigate();
@@ -19,6 +21,10 @@ const AddNote = () => {
   };
 
   const handleAddNote = async () => {
+  if (noteBody==="") {
+      toast.error("Note should not be empty");
+
+  } else {
     try {
       const token = localStorage.getItem("token");
       const uuid = localStorage.getItem("uuid");
@@ -36,9 +42,8 @@ const AddNote = () => {
         }
       );
 
-      alert("Note added successfully");
-
-      // Clear the textarea after successfully adding the note
+      // alert("Note added successfully");
+      toast.success("Note Added");
       setNoteBody("");
 
       // Fetch the updated list of notes
@@ -48,7 +53,9 @@ const AddNote = () => {
         "Error:",
         error.response ? error.response.data : error.message
       );
+      toast.error("Failed to add note");
     }
+  }
   };
 
   const fetchNotes = async () => {
@@ -77,32 +84,79 @@ const AddNote = () => {
   const updateNote = (id) => {
     // Set the selectedNoteId state and navigate to the update page
     setSelectedNoteId(id);
-    history(`/update/${id}`);  // Pass the noteId as a parameter in the URL
+    history(`/update/${id}`); // Pass the noteId as a parameter in the URL
     console.log(`Update note with ID: ${id}`);
+  };
+  // const del = (id) => {
+  //   console.log(id);
+  //   notes.splice(id, 1);
+  //   setNotes([...notes]);
+  // };
+  const del = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      const uuid = localStorage.getItem("uuid");
+
+      await axios.delete(`http://localhost:5002/api/deletenote/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          uuid: uuid,
+        },
+      });
+
+      // Update the state to reflect the deletion
+      setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
+      toast.success("Note deleted");
+    } catch (error) {
+      console.error(
+        "Error deleting note:",
+        error.response ? error.response.data : error.message
+      );
+    }
   };
 
   return (
-    <div className="add-note">
-      <textarea
-        placeholder="Type your note here..."
-        value={noteBody}
-        onChange={handleInputChange}
-      ></textarea>
-      <button onClick={handleAddNote}>Add Note</button>
+    <div>
+      <ToastContainer />
+      <div className="note-main container d-flex justify-content-center align-items-center my-4 flex-column">
+        <div className="d-flex flex-column note-inputs-div w-lg-50 w-100 p-1-note">
+          <textarea
+            placeholder="Type your note here..."
+            id="textarea"
+            type="text"
+            name="body"
+            className=" p-2 note-inputs"
+            value={noteBody}
+            onChange={handleInputChange}
+          ></textarea>
+        </div>
+        <div className=" w-50 w-100 d-flex justify-content-end my-3">
+          <button className="home-btn px-2 py-1" onClick={handleAddNote}>
+            Add Note
+          </button>
+        </div>
+      </div>
 
       {/* Render UpdateNote component if selectedNoteId is not null */}
       {selectedNoteId !== null && <UpdateNote noteId={selectedNoteId} />}
-
-      <div className="note-list-container">
-        <h2>Your Notes</h2>
-        {notes.map((note) => (
-          <NoteCard
-            key={note.id}
-            id={note.id}
-            body={note.body}
-            updateNote={() => updateNote(note.id)}
-          />
-        ))}
+      <div className="note-body">
+        <div className="container-fluid">
+          <div className="row">
+            {notes.map((note) => (
+              <div className="col-lg-3 col-11 mx-lg-5 mx-3 my-2">
+                <NoteCard
+                  key={note.id}
+                  id={note.id}
+                  body={note.body}
+                  del={del}
+                  updateNote={() => updateNote(note.id)}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
