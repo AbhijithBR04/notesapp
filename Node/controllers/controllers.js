@@ -295,6 +295,7 @@ const Authentication = async (req, res, next) => {
     res.send(err);
   }
 };
+
 const usernote = async (req, res) => {
   try {
     const { uuid } = req.params;
@@ -340,6 +341,30 @@ const deleteNote = async (req, res) => {
   }
 };
 
+const getSingleNote = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+
+    const post = await Note.findOne({ where: { id: id } });
+    console.log(post);
+    if (post) {
+      res.status(200).json({
+        message: "Note retrieved ",
+        note:post,
+      });
+    } else {
+      res.status(404).json({
+        message: "Note not found",
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: err.message || "Error retrieving Note",
+    });
+  }
+};
+
 // const usernote = async (req, res) => {
 //   try {
 //     const { uuid } = req.body;
@@ -374,6 +399,7 @@ module.exports = {
   deleteNote,
   registerSchema,
   loginSchema,
+  getSingleNote
 };
 
 // app.put('/notes/:email', async (req, res) => {

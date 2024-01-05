@@ -5,20 +5,37 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 const UpdateNote = () => {
-  const { noteId } = useParams(); // Use useParams to get the noteId from the URL
+  const { noteId } = useParams();
   const [noteBody, setNoteBody] = useState("");
+  const [temp, setDefault] = useState("");
   const history = useNavigate();
 
+
+  const getone=async()=>{
+    try {
+      const resp=await axios.get(`http://localhost:5002/api/getsinglenote/${noteId}`)
+      setDefault(resp.data.note)
+    } catch (error) {
+      
+    }
+  };
+
+
+
   useEffect(() => {
+   
     const fetchNote = async () => {
       try {
-        console.log("Fetching note with ID:", noteId); // Add this log statement
+        console.log("Fetching note with ID:", noteId);
         const response = await axios.get(
           `http://localhost:5002/api/getnote/${noteId}`
         );
 
+        console.log(response);
         if (response.data.length > 0) {
-          setNoteBody(response.data[0].body);
+          // Set the initial state of noteBody with the existing note body
+          setNoteBody(response.data.body);
+          console.log("Note body set:", response);
         }
       } catch (error) {
         console.error(
@@ -27,15 +44,21 @@ const UpdateNote = () => {
         );
       }
     };
-
+    
     fetchNote();
+    getone();
   }, [noteId]);
+
+  
+  
+
+
 
   const handleUpdateNote = async () => {
     try {
       const uuid = localStorage.getItem("uuid");
-      console.log("Note ID:", noteId); // Add this log statement
-      console.log("Note Body:", noteBody); // Add this log statement
+      console.log("Note ID:", noteId);
+      console.log("Note Body:", noteBody);
       const response = await axios.post(
         `http://localhost:5002/api/updatepost`,
         {
@@ -43,17 +66,16 @@ const UpdateNote = () => {
           body: noteBody,
           uuid: uuid,
         }
-        );
-        toast.success("Note Updated")
+      );
+      toast.success("Note Updated");
       console.log(response.data);
-    //   alert(response.data.message);
-     history("/notenew");
+      history("/notenew"); // This line may not be needed, depending on your use case
     } catch (error) {
       console.error(
         "Error updating note:",
         error.response ? error.response.data : error.message
       );
-      toast.error("Note Updation failed")
+      toast.error("Note Updation failed");
     }
   };
 
@@ -65,7 +87,8 @@ const UpdateNote = () => {
         <textarea
           className="note-inputs w-100 p-3"
           name="body"
-          value={noteBody}
+          defaultValue={temp.body}
+          
           onChange={(e) => setNoteBody(e.target.value)}
           placeholder="Enter your updated note..."
         ></textarea>

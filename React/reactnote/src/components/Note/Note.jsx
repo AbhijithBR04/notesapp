@@ -15,25 +15,7 @@ const Note = () => {
     const { name, value } = e.target;
     setInputs({ ...Inputs, [name]: value });
   };
-  // const submit = async() => {
-  //   if (Inputs.body === "") {
-  //     toast.error("Description should not be empty");
-  //   } else {
-  //     if(id){
-        
-  //       const resdata = await axios.post("http://localhost:5002/api/post", {
-  //         body: Inputs.body,
-  //         userUuid: id,
-  //       });
-  //       console.log(resdata);
-  //     }
-  //     setArray([...Array, Inputs]);
-  //     console.log(Inputs);
-  //     setInputs({ body: "" });
-  //     toast.success("Note Added");
-  //     toast.error("Note will no be saved,Please Sign up!");
-  //   }
-  // };
+
   const submit = async () => {
     if (Inputs.body === "") {
       toast.error("Description should not be empty");

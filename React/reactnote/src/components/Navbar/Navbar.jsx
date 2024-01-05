@@ -1,52 +1,83 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const [token, setToken] = useState();
+  const history = useNavigate();
+
+  useEffect(() => {
+    // const storedToken = localStorage.getItem("token");
+    if (localStorage.getItem("token")) {
+      setToken(localStorage.getItem("token"));
+    }
+  }, [localStorage.getItem("token")]);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    setToken("");
+    history("/");
+  };
+
   return (
     <div>
-      <nav class="navbar navbar-expand-lg ">
-        <div class="container">
-          <Link class="navbar-brand" to="">
+      <nav className="navbar navbar-expand-lg">
+        <div className="container">
+          <Link className="navbar-brand" to="/">
             NoteXpress
           </Link>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="navbarSupportedContent"
+            data-bs-target="#navbarSupportedContent"  
             aria-controls="navbarSupportedContent"
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <Link class="nav-link active" aria-current="page" to="">
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <Link className="nav-link active" aria-current="page" to="/">
                   Home
                 </Link>
               </li>
-              <li class="nav-item">
-                <Link class="nav-link active  btn-nav p-2" aria-current="page" to="/notenew">
-                  Notes
-                </Link>
-              </li>
-              <li class="nav-item">
-                <Link class="nav-link active btn-nav p-2" aria-current="page" to="/signup">
-                  Sign up
-                </Link>
-              </li>
-              <li class="nav-item">
-                <Link class="nav-link active  btn-nav p-2" aria-current="page" to="/signin">
-                  Sign in
-                </Link>
-              </li>
-              <li class="nav-item">
-                <Link class="nav-link active  btn-nav p-2" aria-current="page" to="">
-                  Logout
-                </Link>
-              </li>
+
+              {!token ? (
+                <>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link active btn-nav p-2"
+                      aria-current="page"
+                      to="/signup"
+                    >
+                      Sign up
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link active btn-nav p-2"
+                      aria-current="page"
+                      to="/signin"
+                    >
+                      Sign in
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <li className="nav-item">
+                  <Link
+                    className="nav-link active btn-nav p-2"
+                    aria-current="page"
+                    to=""
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>

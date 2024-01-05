@@ -135,3 +135,45 @@ module.exports = {
   postBlog,
   registerSchema,
 };
+
+
+const UpdateNote = ({ noteId, noteBody }) => {
+  const [updatedNoteBody, setUpdatedNoteBody] = useState(noteBody);
+  // ...
+  useEffect(() => {
+    setNoteBody(noteBody);
+  }, [noteBody]);
+  // ...
+};
+// ...
+
+const UpdateNote = ({ noteId, initialNoteBody }) => {
+  const [noteBody, setNoteBody] = useState(initialNoteBody || "");
+
+  // ...
+
+  useEffect(() => {
+    // Set the initial state of noteBody with the existing note body
+    setNoteBody(initialNoteBody || "");
+  }, [initialNoteBody]);
+
+  // ...
+
+  return (
+    <div>
+      {/* ... */}
+
+      <textarea
+        className="note-inputs w-100 p-3"
+        name="body"
+        value={noteBody}
+        onChange={(e) => setNoteBody(e.target.value)}
+        placeholder="Enter your updated note..."
+      ></textarea>
+
+      {/* ... */}
+    </div>
+  );
+};
+
+// ...

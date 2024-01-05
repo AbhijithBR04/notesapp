@@ -9,7 +9,7 @@ const NoteCard = ({ body, id, del, updateNote }) => {
   return (
     <div className="p-3 note-card">
       <div>
-        <p className="note-card-p">{body.split("", 50)}..</p>
+        <p className="note-card-p">{body.split("", 1000)}..</p>
       </div>
       <div className="d-flex justify-content-around">
         <div className="d-flex justify-content-center align-items-center card-icon-body px-2 py-1">

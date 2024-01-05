@@ -12,6 +12,8 @@ const AddNote = () => {
   const [notes, setNotes] = useState([]);
   const [selectedNoteId, setSelectedNoteId] = useState(null);
 
+
+
   useEffect(() => {
     fetchNotes();
   }, []);
@@ -81,17 +83,14 @@ const AddNote = () => {
     }
   };
 
-  const updateNote = (id) => {
+  const updateNote = (id,body) => {
     // Set the selectedNoteId state and navigate to the update page
     setSelectedNoteId(id);
+
     history(`/update/${id}`); // Pass the noteId as a parameter in the URL
     console.log(`Update note with ID: ${id}`);
   };
-  // const del = (id) => {
-  //   console.log(id);
-  //   notes.splice(id, 1);
-  //   setNotes([...notes]);
-  // };
+
   const del = async (id) => {
     try {
       const token = localStorage.getItem("token");
