@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import NoteCard from "./NoteCard";
 import Update from "./Update";
 import "./note.css";
+
 import axios from "axios";
 
 const Note = () => {

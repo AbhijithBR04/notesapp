@@ -1,4 +1,3 @@
-// UpdateNote.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -11,11 +10,14 @@ const UpdateNote = () => {
     const fetchNote = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`http://localhost:5002/api/getnote/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `http://localhost:5002/api/getnote/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setNoteBody(response.data[0].body);
       } catch (error) {
         console.error(
@@ -24,26 +26,28 @@ const UpdateNote = () => {
         );
       }
     };
-  
+
     fetchNote();
   }, [id]); // Include id as a dependency
-  
 
   const handleUpdateNote = async () => {
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:5002/api/updatepost/${id}`, {
-        body: noteBody,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      await axios.put(
+        `http://localhost:5002/api/updatepost/${id}`,
+        {
+          body: noteBody,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       alert("Note updated successfully");
 
       // Implement navigation or any other logic after successful update
-
     } catch (error) {
       console.error(
         "Error updating note:",

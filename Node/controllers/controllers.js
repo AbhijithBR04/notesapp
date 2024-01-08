@@ -56,70 +56,6 @@ const register = async (req, res) => {
   }
 };
 
-// const login = async (req, res) => {
-//   try {
-//     const user = await User.findOne({ where: { email: req.body.email } });
-
-//     if (!user) {
-//       return res
-//         .status(400)
-//         .json({ message: "User not found. Please Sign Up First" });
-//     }
-
-//     const isPasswordCorrect = bcrypt.compare(req.body.password, user.password);
-
-//     if (!isPasswordCorrect) {
-//       return res.status(400).json({ message: "Password is not correct" });
-//     }
-
-//     const { password, ...others } = user.dataValues;
-//     res.status(200).json({ user: others });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// };
-
-// const login = async (req, res) => {
-//   const { email, password } = req.body;
-
-//   try {
-//     const loginDetails = await User.findOne({ where: { email: email } });
-
-//     if (loginDetails) {
-//       bcrypt.compare(
-//         password,
-//         loginDetails.password,
-//         (err, isPasswordCorrect) => {
-//           if (isPasswordCorrect) {
-//             const maxAge = 3 * 60 * 60;
-//             const token = jwt.sign({ uuid: loginDetails.uuid }, jwtsecret, {
-//               expiresIn: maxAge,
-//             });
-//             res.status(200).json({
-//               message: "Login success",
-//               token: token,
-//               id: loginDetails.uuid,
-//             });
-//           } else {
-//             res.status(200).json({
-//               message: "Invalid password",
-//             });
-//           }
-//         }
-//       );
-//     } else {
-//       res.status(200).json({
-//         message: "Invalid credentials",
-//       });
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     res.status(400).json({
-//       message: "Internal Server Error",
-//     });
-//   }
-// };
 const login = async (req, res) => {
   const { email, password } = req.body;
   const loginDetails = await User.findOne({ where: { email: email } });
@@ -155,30 +91,6 @@ const login = async (req, res) => {
   }
 };
 
-// const postNote = async (req, res) => {
-//   const { userUuid, body } = req.body;
-//   try {
-//     const user = await User.findOne({ where: { uuid: userUuid } });
-//     const note = await Note.create({ body, userId: user.id });
-//     console.log(user);
-//     return res.status(200).json(note);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// const postNote = async (req, res) => {
-//   const { uuid, body } = req.body;
-//   try {
-//     const user = await User.findOne({ where: { uuid: uuid } });
-//     const note = await Note.create({ body, uuid: uuid });
-//     console.log(user);
-//     return res.status(200).json(note);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ error: "Failed to create note" });
-//   }
-// };
 const postNote = async (req, res) => {
   try {
     const { uuid, body } = req.body;
@@ -206,45 +118,6 @@ const postNote = async (req, res) => {
     });
   }
 };
-
-//router.put('/post/:uuid',async
-// const updateNote = async (req, res) => {
-//   const uuid = req.params.uuid;
-//   const { body } = req.body;
-//   try {
-//     const user = await Note.findOne({ where: { uuid } });
-//     user.body = body;
-//     await user.save();
-//     return res.json(user);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-// const updateNote = async (req, res) => {
-//   const { uuid, noteId } = req.params;
-//   const { body } = req.body;
-//   try {
-//     const user = await Note.findOne({
-//       where: {
-//         [Op.or]: [
-//           { uuid }, // Search by uuid
-//           { id: noteId }, // Search by id
-//         ],
-//       },
-//     });
-
-//     if (!user) {
-//       return res.status(404).json({ error: 'User not found' });
-//     }
-
-//     user.body = body;
-//     await user.save();
-//     return res.json({ message: 'Note updated successfully', updatedNote: user });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ error: 'Error updating note' });
-//   }
-// };
 
 const updateNote = async (req, res) => {
   try {
@@ -351,7 +224,7 @@ const getSingleNote = async (req, res) => {
     if (post) {
       res.status(200).json({
         message: "Note retrieved ",
-        note:post,
+        note: post,
       });
     } else {
       res.status(404).json({
@@ -365,30 +238,6 @@ const getSingleNote = async (req, res) => {
   }
 };
 
-// const usernote = async (req, res) => {
-//   try {
-//     const { uuid } = req.body;
-//     const userdata = await Note.findAll({ where: { uuid: uuid} });
-
-//     res.status(200).json(userdata);
-//   } catch (err) {
-//     res.send(err);
-//   }
-// };
-// const usernote = async (req, res) => {
-//   const uuid = req.params.uuid;
-//   try {
-//     const user = await User.findOne({
-//       where: { uuid },
-//       include: Notes,
-//     });
-
-//     return res.json(user);
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(500).json({ error: "Something went wrong" });
-//   }
-// };
 module.exports = {
   register,
   login,
@@ -399,63 +248,5 @@ module.exports = {
   deleteNote,
   registerSchema,
   loginSchema,
-  getSingleNote
+  getSingleNote,
 };
-
-// app.put('/notes/:email', async (req, res) => {
-//     const email = req.params.email;
-//     const { body } = req.body;
-
-//     try {
-//       const user = await User.findOne({ where: { email } });
-
-//       if (!user) {
-//         return res.status(404).json({ error: 'User not found' });
-//       }
-
-//       const note = await Note.findOne({ where: { userId: user.id } });
-
-//       if (!note) {
-//         return res.status(404).json({ error: 'Note not found' });
-//       }
-
-//       note.body = body;
-//       await note.save();
-
-//       return res.json(note);
-//     } catch (err) {
-//       console.log(err);
-//       return res.status(500).json({ error: 'Something went wrong' });
-//     }
-//   });
-
-// app.post('/notes/:email', async (req, res) => {
-//     const email = req.params.email;
-//     const { body } = req.body;
-
-//     try {
-//       const user = await User.findOne({ where: { email } });
-
-//       if (!user) {
-//         return res.status(404).json({ error: 'User not found' });
-//       }
-
-//       const newNote = await Note.create({
-//         body,
-//         userId: user.id,
-//       });
-
-//       return res.json(newNote);
-//     } catch (err) {
-//       console.log(err);
-//       return res.status(500).json({ error: 'Something went wrong' });
-//     }
-//   });
-
-// const registerresponse = await instance.post('/login', data);
-// console.log(registerresponse);
-
-// reset()
-// console.log(userData);
-// localStorage.setItem("token", registerresponse.data.token);
-// toast.success(registerresponse.data.message)

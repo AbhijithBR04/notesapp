@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NoteCard from "./NoteCard";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UpdateNote from "./UpdateNote";
 import "./note.css";
-import { ToastContainer, toast } from "react-toastify"; // Import the UpdateNote component
+import { ToastContainer, toast } from "react-toastify"; 
 
 const AddNote = () => {
   const history = useNavigate();
   const [noteBody, setNoteBody] = useState("");
   const [notes, setNotes] = useState([]);
   const [selectedNoteId, setSelectedNoteId] = useState(null);
-
-
 
   useEffect(() => {
     fetchNotes();
@@ -23,41 +21,40 @@ const AddNote = () => {
   };
 
   const handleAddNote = async () => {
-  if (noteBody==="") {
+    if (noteBody === "") {
       toast.error("Note should not be empty");
+    } else {
+      try {
+        const token = localStorage.getItem("token");
+        const uuid = localStorage.getItem("uuid");
 
-  } else {
-    try {
-      const token = localStorage.getItem("token");
-      const uuid = localStorage.getItem("uuid");
-
-      await axios.post(
-        "http://localhost:5002/api/post",
-        {
-          uuid,
-          body: noteBody,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        await axios.post(
+          "http://localhost:5002/api/post",
+          {
+            uuid,
+            body: noteBody,
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-      // alert("Note added successfully");
-      toast.success("Note Added");
-      setNoteBody("");
+        // alert("Note added successfully");
+        toast.success("Note Added");
+        setNoteBody("");
 
-      // Fetch the updated list of notes
-      fetchNotes();
-    } catch (error) {
-      console.error(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
-      toast.error("Failed to add note");
+        // Fetch the updated list of notes
+        fetchNotes();
+      } catch (error) {
+        console.error(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+        toast.error("Failed to add note");
+      }
     }
-  }
   };
 
   const fetchNotes = async () => {
@@ -83,7 +80,7 @@ const AddNote = () => {
     }
   };
 
-  const updateNote = (id,body) => {
+  const updateNote = (id, body) => {
     // Set the selectedNoteId state and navigate to the update page
     setSelectedNoteId(id);
 
@@ -93,6 +90,14 @@ const AddNote = () => {
 
   const del = async (id) => {
     try {
+      const shouldDelete = window.confirm(
+        "Are you sure you want to delete this note?"
+      );
+
+      if (!shouldDelete) {
+        return;
+      }
+
       const token = localStorage.getItem("token");
       const uuid = localStorage.getItem("uuid");
 
@@ -105,7 +110,6 @@ const AddNote = () => {
         },
       });
 
-      // Update the state to reflect the deletion
       setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
       toast.success("Note deleted");
     } catch (error) {
@@ -136,6 +140,9 @@ const AddNote = () => {
             Add Note
           </button>
         </div>
+        <Link to={`/all-notes/${localStorage.getItem("uuid")}`}>
+            View All Notes
+          </Link>
       </div>
 
       {/* Render UpdateNote component if selectedNoteId is not null */}

@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Note from "./components/Note/Note";
 import AccountPage from "./components/Note/AccountPage";
 import UpdateNote from "./components/Note/UpdateNote";
-import UpdateNew from "./components/Note/UpdateNew";
+import AllNotes from "./components/Note/AllNotes";
 
 const App = () => {
   return (
@@ -22,7 +22,7 @@ const App = () => {
           <Route path="/notenew" element={<AccountPage />} />
           <Route path="/update/" element={<UpdateNote />}/>
           <Route path="/update/:noteId"  element={<UpdateNote />} />
-          {/* <Route path="/updatenew" element={<UpdateNew />} /> */}
+          <Route path="/all-notes/:uuid" element={<AllNotes />} />
         </Routes>
       </Router>
     </div>

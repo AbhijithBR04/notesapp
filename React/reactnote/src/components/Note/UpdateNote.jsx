@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./note.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -10,20 +11,16 @@ const UpdateNote = () => {
   const [temp, setDefault] = useState("");
   const history = useNavigate();
 
-
-  const getone=async()=>{
+  const getone = async () => {
     try {
-      const resp=await axios.get(`http://localhost:5002/api/getsinglenote/${noteId}`)
-      setDefault(resp.data.note)
-    } catch (error) {
-      
-    }
+      const resp = await axios.get(
+        `http://localhost:5002/api/getsinglenote/${noteId}`
+      );
+      setDefault(resp.data.note);
+    } catch (error) {}
   };
 
-
-
   useEffect(() => {
-   
     const fetchNote = async () => {
       try {
         console.log("Fetching note with ID:", noteId);
@@ -44,15 +41,10 @@ const UpdateNote = () => {
         );
       }
     };
-    
+
     fetchNote();
     getone();
   }, [noteId]);
-
-  
-  
-
-
 
   const handleUpdateNote = async () => {
     try {
@@ -82,16 +74,18 @@ const UpdateNote = () => {
   return (
     <div>
       <ToastContainer />
-      <div className="p-5 d-flex justify-content-center align-items-start flex-column update">
+      <div  className="note-main container d-flex my-4 flex-column">
         <h2>Update Note</h2>
+        <div  className="d-flex flex-column note-inputs-div w-lg-50 w-100 p-1-note">
         <textarea
           className="note-inputs w-100 p-3"
           name="body"
           defaultValue={temp.body}
-          
           onChange={(e) => setNoteBody(e.target.value)}
           placeholder="Enter your updated note..."
         ></textarea>
+        </div>
+   
         <div>
           <button className="btn btn-dark my-4" onClick={handleUpdateNote}>
             Update Note
