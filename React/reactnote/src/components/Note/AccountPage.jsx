@@ -4,13 +4,17 @@ import NoteCard from "./NoteCard";
 import { Link, useNavigate } from "react-router-dom";
 import UpdateNote from "./UpdateNote";
 import "./note.css";
-import { ToastContainer, toast } from "react-toastify"; 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddNote = () => {
   const history = useNavigate();
   const [noteBody, setNoteBody] = useState("");
   const [notes, setNotes] = useState([]);
   const [selectedNoteId, setSelectedNoteId] = useState(null);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredNotes, setFilteredNotes] = useState([]);
 
   useEffect(() => {
     fetchNotes();
@@ -41,11 +45,8 @@ const AddNote = () => {
           }
         );
 
-        // alert("Note added successfully");
         toast.success("Note Added");
         setNoteBody("");
-
-        // Fetch the updated list of notes
         fetchNotes();
       } catch (error) {
         console.error(
@@ -80,11 +81,9 @@ const AddNote = () => {
     }
   };
 
-  const updateNote = (id, body) => {
-    // Set the selectedNoteId state and navigate to the update page
+  const updateNote = (id) => {
     setSelectedNoteId(id);
-
-    history(`/update/${id}`); // Pass the noteId as a parameter in the URL
+    history(`/update/${id}`);
     console.log(`Update note with ID: ${id}`);
   };
 
@@ -111,13 +110,21 @@ const AddNote = () => {
       });
 
       setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
-      toast.success("Note deleted");
+      toast.error("Note deleted");
     } catch (error) {
       console.error(
         "Error deleting note:",
         error.response ? error.response.data : error.message
       );
     }
+  };
+
+  const handleSearch = () => {
+    const trimmed = searchTerm.trim();
+    const filtered = notes.filter((note) =>
+      note.body.toLowerCase().includes(trimmed.toLowerCase())
+    );
+    setFilteredNotes(filtered);
   };
 
   return (
@@ -135,35 +142,69 @@ const AddNote = () => {
             onChange={handleInputChange}
           ></textarea>
         </div>
-        <div className=" w-50 w-100 d-flex justify-content-end my-3">
+        <div className=" w-50 w-100 d-flex justify-content-center my-3">
           <button className="home-btn px-2 py-1" onClick={handleAddNote}>
             Add Note
           </button>
-        </div>
-        <Link to={`/all-notes/${localStorage.getItem("uuid")}`}>
+          <Link  className=" w-50 w-100 d-flex justify-content-end " to={`/all-notes/${localStorage.getItem("uuid")}`}>
             View All Notes
           </Link>
-      </div>
+        </div>
 
-      {/* Render UpdateNote component if selectedNoteId is not null */}
-      {selectedNoteId !== null && <UpdateNote noteId={selectedNoteId} />}
-      <div className="note-body">
-        <div className="container-fluid">
-          <div className="row">
-            {notes.map((note) => (
-              <div className="col-lg-3 col-11 mx-lg-5 mx-3 my-2">
-                <NoteCard
-                  key={note.id}
-                  id={note.id}
-                  body={note.body}
-                  del={del}
-                  updateNote={() => updateNote(note.id)}
-                />
-              </div>
-            ))}
-          </div>
+        <div className=" d-flex flex-row gap-2 justify-content-end ">
+          <input
+            type="text"
+            placeholder="Search notes..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button className="home-btn px-2 py-1" onClick={handleSearch}>
+            Search
+          </button>
         </div>
       </div>
+
+      {searchTerm && (
+        <div className="note-body">
+          <div className="container-fluid">
+            <div className="row">
+              {filteredNotes.map((note) => (
+                <div className="col-lg-3 col-11 mx-lg-5 mx-3 my-2">
+                  <NoteCard
+                    key={note.id}
+                    id={note.id}
+                    body={note.body}
+                    del={del}
+                    updateNote={() => updateNote(note.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!searchTerm && (
+        <div className="note-body">
+          <div className="container-fluid">
+            <div className="row">
+              {notes.map((note) => (
+                <div className="col-lg-3 col-11 mx-lg-5 mx-3 my-2">
+                  <NoteCard
+                    key={note.id}
+                    id={note.id}
+                    body={note.body}
+                    del={del}
+                    updateNote={() => updateNote(note.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {selectedNoteId !== null && <UpdateNote noteId={selectedNoteId} />}
     </div>
   );
 };

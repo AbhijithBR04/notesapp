@@ -4,6 +4,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
   const history = useNavigate();
@@ -21,9 +23,14 @@ const Signup = () => {
   });
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().min(3, "Name must be at least 4 characters").max(20, "Name must be at most 20 characters").required("Name is required"),
+    name: Yup.string()
+      .min(3, "Name must be at least 4 characters")
+      .max(20, "Name must be at most 20 characters")
+      .required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
-    password: Yup.string().required("Password is required").min(6, "Password must be at least 6 characters"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters"),
   });
 
   const validateField = async (field, value) => {
@@ -60,15 +67,14 @@ const Signup = () => {
     const isValid = await validate();
 
     if (isValid) {
-      
       try {
         await axios.post("http://localhost:5002/api/register", Inputs, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-   
-        alert("Registration successful");
+
+        toast.success("Registration successful");
         history("/signin");
       } catch (error) {
         console.log(error);
@@ -77,44 +83,59 @@ const Signup = () => {
   };
 
   return (
-    <div className="signup">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-8 column d-flex justify-content-center align-items-center ">
-            <div className="d-flex flex-column  w-100 p-3">
-              <input
-                className={`p-2 my-3 input-signup ${errors.email ? 'is-invalid' : ''}`}
-                type="email"
-                name="email"
-                placeholder="Enter Your Email"
-                onChange={change}
-                value={Inputs.email}
-              />
-              {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+    <div>
+      <ToastContainer/>
+      <div className="signup">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8 column d-flex justify-content-center align-items-center ">
+              <div className="d-flex flex-column  w-100 p-3">
+                <input
+                  className={`p-2 my-3 input-signup ${
+                    errors.email ? "is-invalid" : ""
+                  }`}
+                  type="email"
+                  name="email"
+                  placeholder="Enter Your Email"
+                  onChange={change}
+                  value={Inputs.email}
+                />
+                {errors.email && (
+                  <div className="invalid-feedback">{errors.email}</div>
+                )}
 
-              <input
-                className={`p-2 my-3 input-signup ${errors.name ? 'is-invalid' : ''}`}
-                type="text"
-                name="name"
-                placeholder="Enter Your name"
-                onChange={change}
-                value={Inputs.name}
-              />
-              {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+                <input
+                  className={`p-2 my-3 input-signup ${
+                    errors.name ? "is-invalid" : ""
+                  }`}
+                  type="text"
+                  name="name"
+                  placeholder="Enter Your name"
+                  onChange={change}
+                  value={Inputs.name}
+                />
+                {errors.name && (
+                  <div className="invalid-feedback">{errors.name}</div>
+                )}
 
-              <input
-                className={`p-2 my-3 input-signup ${errors.password ? 'is-invalid' : ''}`}
-                type="password"
-                name="password"
-                placeholder="Enter Your Password"
-                onChange={change}
-                value={Inputs.password}
-              />
-              {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                <input
+                  className={`p-2 my-3 input-signup ${
+                    errors.password ? "is-invalid" : ""
+                  }`}
+                  type="password"
+                  name="password"
+                  placeholder="Enter Your Password"
+                  onChange={change}
+                  value={Inputs.password}
+                />
+                {errors.password && (
+                  <div className="invalid-feedback">{errors.password}</div>
+                )}
 
-              <button className="btn-signup p-2" onClick={submit}>
-                Sign Up
-              </button>
+                <button className="btn-signup p-2" onClick={submit}>
+                  Sign Up
+                </button>
+              </div>
             </div>
           </div>
         </div>
