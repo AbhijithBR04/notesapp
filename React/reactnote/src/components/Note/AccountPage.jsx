@@ -15,15 +15,16 @@ const AddNote = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredNotes, setFilteredNotes] = useState([]);
-
+  // Fetch notes from the server when the component mounts
   useEffect(() => {
     fetchNotes();
   }, []);
 
+  // Handler for updating the note body input
   const handleInputChange = (e) => {
     setNoteBody(e.target.value);
   };
-
+  // Handler for adding a new note
   const handleAddNote = async () => {
     if (noteBody === "") {
       toast.error("Note should not be empty");
@@ -57,7 +58,7 @@ const AddNote = () => {
       }
     }
   };
-
+  // Fetch notes from the server
   const fetchNotes = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -80,13 +81,14 @@ const AddNote = () => {
       );
     }
   };
-
+  // Handler for updating a note
   const updateNote = (id) => {
     setSelectedNoteId(id);
     history(`/update/${id}`);
     console.log(`Update note with ID: ${id}`);
   };
 
+  // Handler for deleting a note
   const del = async (id) => {
     try {
       const shouldDelete = window.confirm(
@@ -119,8 +121,10 @@ const AddNote = () => {
     }
   };
 
-  const handleSearch = () => {
-    const trimmed = searchTerm.trim();
+  // Handler for searching notes
+  const handleSearch = (e) => {
+    const trimmed = e.target.value.trim();
+    setSearchTerm(trimmed);
     const filtered = notes.filter((note) =>
       note.body.toLowerCase().includes(trimmed.toLowerCase())
     );
@@ -159,11 +163,8 @@ const AddNote = () => {
           type="text"
           placeholder="Search your notes here..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearch}
         />
-        <button className="home-btn px-2 py-1" onClick={handleSearch}>
-          Search
-        </button>
       </div>
       {searchTerm && (
         <div className="note-body">

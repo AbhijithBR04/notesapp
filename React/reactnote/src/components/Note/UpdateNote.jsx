@@ -61,7 +61,7 @@ const UpdateNote = () => {
       );
       toast.success("Note Updated");
       console.log(response.data);
-      history("/notenew"); // This line may not be needed, depending on your use case
+      history("/notenew"); 
     } catch (error) {
       console.error(
         "Error updating note:",

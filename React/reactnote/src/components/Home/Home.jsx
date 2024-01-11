@@ -12,7 +12,6 @@ const Home = () => {
           down thoughts, ideas, or important information, NoteXpress has you
           covered.
         </p>
-        {/* <button class="home-btn p-2">Make Todo List</button> */}
       </div>
     </div>
   );

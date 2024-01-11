@@ -4,7 +4,6 @@ import Home from "./components/Home/Home";
 import Signup from "./components/Signup/Signup";
 import Signin from "./components/Signup/Signin";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Note from "./components/Note/Note";
 import AccountPage from "./components/Note/AccountPage";
 import UpdateNote from "./components/Note/UpdateNote";
 import AllNotes from "./components/Note/AllNotes";
@@ -19,10 +18,9 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
-          <Route path="/note" element={<Note />} />
           <Route path="/notenew" element={<AccountPage />} />
-          <Route path="/update/" element={<UpdateNote />}/>
-          <Route path="/update/:noteId"  element={<UpdateNote />} />
+          <Route path="/update/" element={<UpdateNote />} />
+          <Route path="/update/:noteId" element={<UpdateNote />} />
           <Route path="/view-note/:noteId" element={<ViewNote />} />
           <Route path="/all-notes/:uuid" element={<AllNotes />} />
         </Routes>
