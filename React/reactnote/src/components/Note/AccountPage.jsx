@@ -151,6 +151,7 @@ const AddNote = () => {
             Add Note
           </button>
           <Link
+            style={{ textDecoration: "none" }}
             className="w-100 d-flex justify-content-end "
             to={`/all-notes/${localStorage.getItem("uuid")}`}
           >

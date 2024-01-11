@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import "./note.css";
 
 const ViewNote = () => {
   const { noteId } = useParams();
@@ -51,13 +52,12 @@ const ViewNote = () => {
     <div>
       <div className="note-main container d-flex my-4 flex-column">
         <h2>Note</h2>
-
         <p>{temp.body}</p>
-      </div>
-      <div className="d-flex w-75 mx-auto    ">
-        <button className="text-start " onClick={back}>back</button>
+      <div className="d-flex  mx-auto">
+        <button className="home-btn text-end " onClick={back}>Go back to notes</button>
       </div>
     </div>
+      </div>
   );
 };
 

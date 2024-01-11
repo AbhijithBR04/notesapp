@@ -61,7 +61,7 @@ const UpdateNote = () => {
       );
       toast.success("Note Updated");
       console.log(response.data);
-      history("/notenew"); 
+      history("/notenew");
     } catch (error) {
       console.error(
         "Error updating note:",
@@ -70,25 +70,31 @@ const UpdateNote = () => {
       toast.error("Note Updation failed");
     }
   };
+  const back = () => {
+    history("/notenew");
+  };
 
   return (
     <div>
       <ToastContainer />
-      <div  className="note-main container d-flex my-4 flex-column">
+      <div className="note-main container d-flex my-4 flex-column">
         <h2>Update Note</h2>
-        <div  className="d-flex flex-column note-inputs-div w-lg-50 w-100 p-1-note">
-        <textarea
-          className="note-inputs w-100 p-3"
-          name="body"
-          defaultValue={temp.body}
-          onChange={(e) => setNoteBody(e.target.value)}
-          placeholder="Enter your updated note..."
-        ></textarea>
+        <div className="d-flex flex-column note-inputs-div w-lg-50 w-100 p-1-note">
+          <textarea
+            className="note-inputs w-100 p-3"
+            name="body"
+            defaultValue={temp.body}
+            onChange={(e) => setNoteBody(e.target.value)}
+            placeholder="Enter your updated note..."
+          ></textarea>
         </div>
-   
-        <div>
+
+        <div className=" d-flex gap-2">
           <button className="btn btn-dark my-4" onClick={handleUpdateNote}>
             Update Note
+          </button>
+          <button className="btn btn-dark my-4  " onClick={back}>
+            Go back to notes
           </button>
         </div>
       </div>

@@ -12,9 +12,9 @@ const NoteCard = ({ body, id, del, updateNote }) => {
       <div>
         <p className="note-card-p">{body.split("", 100)}..</p>
       </div>
-      <div className="d-flex justify-content-around">
-        <div className="d-flex justify-content-center align-items-center card-icon-body px-2 py-1">
-          <Link to={`/update/${id}`}>
+      <div className="d-flex justify-content-around ">
+        <div className="d-flex justify-content-center align-items-center card-icon-body px-2 py-1 ">
+          <Link  style={{textDecoration: 'none'}} to={`/update/${id}`}>
             <GrDocumentUpdate
               className="card-icons"
               onClick={() => updateNote(id)}
@@ -29,7 +29,7 @@ const NoteCard = ({ body, id, del, updateNote }) => {
           <AiFillDelete className="card-icons del" /> Delete
         </div>
         <div className="d-flex justify-content-center align-items-center card-icon-body px-2 py-1">
-          <Link to={`/view-note/${id}`}>
+          <Link  style={{textDecoration: 'none'}} to={`/view-note/${id}`}>
             <AiFillEye className="card-icons" />
             View
           </Link>
