@@ -8,6 +8,7 @@ import Note from "./components/Note/Note";
 import AccountPage from "./components/Note/AccountPage";
 import UpdateNote from "./components/Note/UpdateNote";
 import AllNotes from "./components/Note/AllNotes";
+import ViewNote from "./components/Note/ViewNote";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/notenew" element={<AccountPage />} />
           <Route path="/update/" element={<UpdateNote />}/>
           <Route path="/update/:noteId"  element={<UpdateNote />} />
+          <Route path="/view-note/:noteId" element={<ViewNote />} />
           <Route path="/all-notes/:uuid" element={<AllNotes />} />
         </Routes>
       </Router>

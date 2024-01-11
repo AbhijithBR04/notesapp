@@ -142,28 +142,29 @@ const AddNote = () => {
             onChange={handleInputChange}
           ></textarea>
         </div>
-        <div className=" w-50 w-100 d-flex justify-content-center my-3">
+        <div className=" w-100  d-flex justify-content-center my-2">
           <button className="home-btn px-2 py-1" onClick={handleAddNote}>
             Add Note
           </button>
-          <Link  className=" w-50 w-100 d-flex justify-content-end " to={`/all-notes/${localStorage.getItem("uuid")}`}>
+          <Link
+            className="w-100 d-flex justify-content-end "
+            to={`/all-notes/${localStorage.getItem("uuid")}`}
+          >
             View All Notes
           </Link>
         </div>
-
-        <div className=" d-flex flex-row gap-2 justify-content-end ">
-          <input
-            type="text"
-            placeholder="Search notes..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <button className="home-btn px-2 py-1" onClick={handleSearch}>
-            Search
-          </button>
-        </div>
       </div>
-
+      <div className="note-search d-flex flex-row gap-2 justify-content-end px-5 py-1">
+        <input
+          type="text"
+          placeholder="Search your notes here..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button className="home-btn px-2 py-1" onClick={handleSearch}>
+          Search
+        </button>
+      </div>
       {searchTerm && (
         <div className="note-body">
           <div className="container-fluid">

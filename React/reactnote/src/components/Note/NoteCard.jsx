@@ -2,6 +2,7 @@ import React from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { GrDocumentUpdate } from "react-icons/gr";
 import { Link } from "react-router-dom";
+import { AiFillEye } from "react-icons/ai";
 import "./note.css";
 import "../Home/home.css";
 
@@ -26,6 +27,12 @@ const NoteCard = ({ body, id, del, updateNote }) => {
           onClick={() => del(id)}
         >
           <AiFillDelete className="card-icons del" /> Delete
+        </div>
+        <div className="d-flex justify-content-center align-items-center card-icon-body px-2 py-1">
+          <Link to={`/view-note/${id}`}>
+            <AiFillEye className="card-icons" />
+            View
+          </Link>
         </div>
       </div>
     </div>

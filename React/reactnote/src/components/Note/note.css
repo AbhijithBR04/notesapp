@@ -14,10 +14,11 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-/* #textarea {
-    display: none;
-  } */
-
+.note-search{
+  
+  margin-right: 75px;
+  
+}
 .note-card {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }

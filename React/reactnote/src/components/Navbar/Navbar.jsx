@@ -18,7 +18,10 @@ const Navbar = () => {
     setToken("");
     history("/");
   };
-
+const handleBack=(e)=>{
+  e.preventDefault();
+  history('/notenew')
+}
   return (
     <div>
       <nav className="navbar navbar-expand-lg">
@@ -30,7 +33,7 @@ const Navbar = () => {
             className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"  
+            data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent"
             aria-expanded="false"
             aria-label="Toggle navigation"
@@ -67,16 +70,28 @@ const Navbar = () => {
                   </li>
                 </>
               ) : (
-                <li className="nav-item">
-                  <Link
-                    className="nav-link active btn-nav p-2"
-                    aria-current="page"
-                    to=""
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </Link>
-                </li>
+                <div className="d-flex">
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link active btn-nav p-2"
+                      aria-current="page"
+                      to=""
+                      onClick={handleBack}
+                    >
+                      Notes
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link active btn-nav p-2"
+                      aria-current="page"
+                      to=""
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </Link>
+                  </li>
+                </div>
               )}
             </ul>
           </div>
